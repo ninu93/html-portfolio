@@ -1,15 +1,458 @@
-<!-- TODO 1: Create the HTML Boilerplate -->
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator factură energie</title>
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-strong: #0d5d56;
+      --bg: #0b1120;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #fbbf24;
+      --error: #f87171;
+    }
 
-<!-- TODO 2: Add Your previous projects' HTML into the public folder -->
+    * {
+      box-sizing: border-box;
+    }
 
-<!-- TODO 3: Take screenshots of your project previews and add the images to the images folder -->
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 10% 20%, rgba(15, 118, 110, 0.25), rgba(15, 118, 110, 0)),
+        radial-gradient(circle at 80% 0%, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0)),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-<!-- TODO 4: Add titles/subtitles etc. -->
+    header {
+      padding: 32px 24px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
 
-<!-- TODO 5: Add a link to the project pages -->
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 36px);
+      color: #f8fafc;
+      letter-spacing: -0.02em;
+    }
 
-<!-- TODO 6: Add images to show the project previews
-HINT for TODO 6: You can use the height attribute set to 200 to make the image smaller:
-https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-height -->
+    .subtitle {
+      margin: 0;
+      max-width: 720px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+    }
 
-<!-- TODO 7: Add the Contact Me and About Me page links -->
+    main {
+      padding: 12px 24px 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      color: #e0f2fe;
+      letter-spacing: -0.01em;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      background: #0f172a;
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .primary {
+      background: linear-gradient(120deg, var(--primary), var(--primary-strong));
+      color: white;
+      box-shadow: 0 10px 30px rgba(15, 118, 110, 0.35);
+    }
+
+    .secondary {
+      background: rgba(148, 163, 184, 0.14);
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .stat-title {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    .stat-value {
+      margin: 8px 0 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .stat-detail {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tips {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .tip {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px dashed rgba(148, 163, 184, 0.3);
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(251, 191, 36, 0.15);
+      color: #fcd34d;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      margin-right: 8px;
+    }
+
+    .error {
+      color: var(--error);
+      margin: 8px 0 0;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 0 16px 32px;
+      }
+
+      header {
+        padding: 24px 16px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="pill">Monitorizare factură</div>
+    <h1>Introdu facturile la energie și vezi instant cum poți face economii.</h1>
+    <p class="subtitle">
+      Completează suma de plată, consumul și perioada de facturare. Calculez automat costul pe kWh, consumul zilnic și ce economii
+      obții dacă reduci consumul cu 5–20%. Poți seta și un buget țintă pentru a afla cât ar trebui să reduci consumul.
+    </p>
+  </header>
+
+  <main>
+    <section class="card" aria-label="Formular factură energie">
+      <h2>Date factură</h2>
+      <form id="bill-form" novalidate>
+        <div class="grid-two">
+          <div>
+            <label for="bill-amount">Valoare factură (lei)</label>
+            <input id="bill-amount" name="bill-amount" type="number" inputmode="decimal" step="0.01" min="0" placeholder="ex: 320" required>
+          </div>
+          <div>
+            <label for="consumption">Consum (kWh)</label>
+            <input id="consumption" name="consumption" type="number" inputmode="decimal" step="0.01" min="0" placeholder="ex: 185" required>
+          </div>
+          <div>
+            <label for="tariff">Tarif contractual (lei/kWh)</label>
+            <input id="tariff" name="tariff" type="number" inputmode="decimal" step="0.0001" min="0" placeholder="opțional, ex: 1.2">
+          </div>
+          <div>
+            <label for="days">Număr zile facturate</label>
+            <input id="days" name="days" type="number" inputmode="numeric" step="1" min="1" max="62" placeholder="ex: 30">
+          </div>
+          <div>
+            <label for="budget">Buget țintă (lei)</label>
+            <input id="budget" name="budget" type="number" inputmode="decimal" step="0.01" min="0" placeholder="ex: 280 (opțional)">
+          </div>
+          <div>
+            <label for="plan">Obiectiv de reducere</label>
+            <select id="plan" name="plan">
+              <option value="0.05">Reducere 5%</option>
+              <option value="0.10" selected>Reducere 10%</option>
+              <option value="0.15">Reducere 15%</option>
+              <option value="0.20">Reducere 20%</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="primary">Calculează</button>
+          <button type="button" class="secondary" id="reset">Șterge datele</button>
+        </div>
+        <p id="error" class="error" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card" aria-label="Rezultate">
+      <h2>Rezumat factură</h2>
+      <div class="stats" id="summary">
+        <div class="stat">
+          <p class="stat-title">Total de plată</p>
+          <p class="stat-value" id="amount-display">-</p>
+          <p class="stat-detail" id="amount-detail">Introdu datele pentru a vedea rezultatele.</p>
+        </div>
+        <div class="stat">
+          <p class="stat-title">Consum facturat</p>
+          <p class="stat-value" id="consumption-display">-</p>
+          <p class="stat-detail" id="consumption-detail">Consum mediu zilnic: -</p>
+        </div>
+        <div class="stat">
+          <p class="stat-title">Cost pe kWh</p>
+          <p class="stat-value" id="tariff-display">-</p>
+          <p class="stat-detail" id="tariff-detail">Tarif estimat pe baza facturii.</p>
+        </div>
+        <div class="stat">
+          <p class="stat-title">Economii potențiale</p>
+          <p class="stat-value" id="savings-display">-</p>
+          <p class="stat-detail" id="savings-detail">Aplică scenarii de reducere.</p>
+        </div>
+      </div>
+
+      <div class="tips" id="tips">
+        <div class="tip">
+          <strong>Sfat rapid:</strong> redu consumul în orele de vârf și verifică dacă ai tarife diferențiate zi/noapte.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('bill-form');
+    const resetBtn = document.getElementById('reset');
+    const errorBox = document.getElementById('error');
+
+    const amountDisplay = document.getElementById('amount-display');
+    const amountDetail = document.getElementById('amount-detail');
+    const consumptionDisplay = document.getElementById('consumption-display');
+    const consumptionDetail = document.getElementById('consumption-detail');
+    const tariffDisplay = document.getElementById('tariff-display');
+    const tariffDetail = document.getElementById('tariff-detail');
+    const savingsDisplay = document.getElementById('savings-display');
+    const savingsDetail = document.getElementById('savings-detail');
+    const tipsContainer = document.getElementById('tips');
+
+    const formatCurrency = (value) => new Intl.NumberFormat('ro-RO', {
+      style: 'currency',
+      currency: 'RON',
+      minimumFractionDigits: 2
+    }).format(value);
+
+    const formatNumber = (value) => new Intl.NumberFormat('ro-RO', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(value);
+
+    const buildTips = (avgDaily, projectedSavings, planPercent) => {
+      const tips = [];
+
+      if (avgDaily > 8) {
+        tips.push('Consum zilnic peste medie. Verifică aparatele care rămân în priză permanent (mod standby) și folosește prize inteligente.');
+      } else {
+        tips.push('Ești deja eficient. Continuă să programezi electrocasnicele în afara orelor de vârf.');
+      }
+
+      tips.push(`Reducerea selectată (${Math.round(planPercent * 100)}%) înseamnă economii de aproximativ ${formatCurrency(projectedSavings)}.`);
+
+      if (avgDaily > 12) {
+        tips.push('Ia în calcul înlocuirea becurilor cu LED și verifică eticheta energetică a electrocasnicelor vechi.');
+      }
+
+      return tips;
+    };
+
+    const showError = (message) => {
+      errorBox.textContent = message;
+      if (message) {
+        errorBox.style.visibility = 'visible';
+      } else {
+        errorBox.style.visibility = 'hidden';
+      }
+    };
+
+    const updateResults = (data) => {
+      const {
+        amount,
+        consumption,
+        days,
+        tariff,
+        effectiveTariff,
+        avgDaily,
+        planPercent,
+        savings,
+        budget,
+        budgetReduction
+      } = data;
+
+      amountDisplay.textContent = formatCurrency(amount);
+      amountDetail.textContent = days ? `Perioadă de facturare: ${days} zile.` : 'Perioada nu a fost specificată.';
+
+      consumptionDisplay.textContent = `${formatNumber(consumption)} kWh`;
+      consumptionDetail.textContent = days && days > 0
+        ? `Consum mediu zilnic: ${formatNumber(avgDaily)} kWh.`
+        : 'Adaugă perioada pentru a vedea consumul zilnic.';
+
+      tariffDisplay.textContent = `${formatNumber(effectiveTariff)} lei/kWh`;
+      tariffDetail.textContent = tariff
+        ? 'Tarif introdus manual.'
+        : 'Tarif calculat automat din factură.';
+
+      savingsDisplay.textContent = formatCurrency(savings.amount);
+      savingsDetail.textContent = `Reducere ${Math.round(planPercent * 100)}% => ${formatCurrency(savings.newAmount)} de plată.`;
+
+      const tips = buildTips(avgDaily, savings.amount, planPercent);
+      if (budget > 0 && budgetReduction > 0) {
+        tips.unshift(`Pentru a te încadra în bugetul de ${formatCurrency(budget)}, ai nevoie de o reducere de aproximativ ${formatNumber(budgetReduction * 100)}% (${formatCurrency(amount - budget)}).`);
+      }
+
+      tipsContainer.innerHTML = tips.map((text) => `<div class="tip">${text}</div>`).join('');
+    };
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      showError('');
+
+      const amount = parseFloat(document.getElementById('bill-amount').value);
+      const consumption = parseFloat(document.getElementById('consumption').value);
+      const tariff = parseFloat(document.getElementById('tariff').value);
+      const days = parseInt(document.getElementById('days').value, 10);
+      const planPercent = parseFloat(document.getElementById('plan').value);
+      const budget = parseFloat(document.getElementById('budget').value);
+
+      if (!Number.isFinite(amount) || amount <= 0 || !Number.isFinite(consumption) || consumption <= 0) {
+        showError('Completează cel puțin suma și consumul cu valori pozitive.');
+        return;
+      }
+
+      const effectiveTariff = Number.isFinite(tariff) && tariff > 0 ? tariff : amount / consumption;
+      const periodDays = Number.isFinite(days) && days > 0 ? days : null;
+      const avgDaily = periodDays ? consumption / periodDays : consumption / 30;
+
+      const savingsAmount = amount * planPercent;
+      const newAmount = Math.max(amount - savingsAmount, 0);
+
+      const budgetReduction = Number.isFinite(budget) && budget > 0 ? Math.max((amount - budget) / amount, 0) : 0;
+
+      updateResults({
+        amount,
+        consumption,
+        days: periodDays,
+        tariff,
+        effectiveTariff,
+        avgDaily,
+        planPercent,
+        savings: { amount: savingsAmount, newAmount },
+        budget,
+        budgetReduction
+      });
+    };
+
+    const handleReset = () => {
+      form.reset();
+      showError('');
+      amountDisplay.textContent = '-';
+      amountDetail.textContent = 'Introdu datele pentru a vedea rezultatele.';
+      consumptionDisplay.textContent = '-';
+      consumptionDetail.textContent = 'Consum mediu zilnic: -';
+      tariffDisplay.textContent = '-';
+      tariffDetail.textContent = 'Tarif estimat pe baza facturii.';
+      savingsDisplay.textContent = '-';
+      savingsDetail.textContent = 'Aplică scenarii de reducere.';
+      tipsContainer.innerHTML = '<div class="tip"><strong>Sfat rapid:</strong> redu consumul în orele de vârf și verifică dacă ai tarife diferențiate zi/noapte.</div>';
+    };
+
+    form.addEventListener('submit', handleSubmit);
+    resetBtn.addEventListener('click', handleReset);
+  </script>
+</body>
+</html>
